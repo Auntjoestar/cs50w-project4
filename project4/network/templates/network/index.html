@@ -1,5 +1,58 @@
 {% extends "network/layout.html" %}
+{% load static %}
+
 
 {% block body %}
-    TODO
+<div class="alert">
+    
+</div>
+    <div id="postView">
+        <div class="makePost">
+        </div>
+        <!--  10 por página --> 
+        <div class="allPosts">
+
+        </div>
+        <div class="followingPosts">
+            <!--si user está loggeado--> 
+
+        </div>
+    </div>
+    <div id="profileView">
+        <!--si user está loggeado-->
+        <div class="profile">
+            <img id="profile-picture" src="" alt="profile-picture">
+            <a id="edit-profile" href="#editProfileView">Edit profile</a>
+            <a id="change_picture" href="#editImageView">change_picturee</a>
+            <p id="name"></p>
+            <p id="username"></p>
+            <p id="bio"></p>
+            <p id="joined"></p>
+        </div>
+        <div class="following">
+
+        </div>
+        <div class="follower">
+
+        </div>
+    </div>
+    <div id="editProfileView">
+        <h1>Edit profile</h1>
+        <form id="edit-form" action="{% url 'set_profile' %}" method="put">
+            {% csrf_token %} 
+            {{form.as_p}}
+            {{pictureForm.as_p}}
+        <input class="btn btn-primary" type="submit" value="Update Profile">
+        </form>
+    </div>
+    <div id="editImageView">
+        <form id="edit-picture-form" action="{% url 'change_picture' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %} 
+            {{pictureForm.as_p}}
+        <input class="btn btn-primary" type="submit" value="Update Picture">
+        </form>
+    </div>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'network/feed.js' %}"></script>
 {% endblock %}

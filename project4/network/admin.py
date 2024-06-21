@@ -1,5 +1,13 @@
 from django.contrib import admin
-from models import *
+from .models import *
 # Register your models here.
-for model in models:
-    admin.site.register(model)
+
+admin.site.register(User)
+admin.site.register(Profile)
+admin.site.register(Followers)
+admin.site.register(ProfilePictures)
+admin.site.register(Post)
+admin.site.register(Comments)
+admin.site.register(Reply)
+admin.site.register(Pictures)
+admin.site.register(Hashtags)
