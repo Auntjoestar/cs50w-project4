@@ -13,6 +13,8 @@ from .forms import ProfileForm, ProfilePicturesForm, PostForm, CommentsForm, Rep
 def index(request):
     form = ProfileForm()
     pictureForm = ProfilePicturesForm()
+    postForm = PostForm()
+    print(request.user.id)
     if request.user.id is not None:
         id = request.user.id
         profile = Profile.objects.get(pk = id)
@@ -22,6 +24,7 @@ def index(request):
     return render(request, "network/index.html", {
         "form": form,
         "pictureForm": pictureForm,
+        "postForm": postForm,
     })
 
 
@@ -59,31 +62,69 @@ def register(request):
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
         if password != confirmation:
+            form = ProfileForm()
+            imageform = ProfilePicturesForm()
             return render(request, "network/register.html", {
-                "message": "Passwords must match."
+                "message": "Passwords must match.",
+                "form": form,
+                "imageform": imageform,
             })
         form = ProfileForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data["name"]
             pronouns = form.cleaned_data["pronouns"]
             bio = form.cleaned_data["bio"]
-
+        else:
+            form = ProfileForm()
+            imageform = ProfilePicturesForm()
+            return render(request, "network/register.html", {
+                "message": "Profile creation failed.",
+                "form": form,
+                "imageform": imageform,
+            })
+        imageform = ProfilePicturesForm(request.POST, request.FILES)
+        if imageform.is_valid():
+            picture = imageform.cleaned_data["picture"]
+        else:
+            form = ProfileForm()
+            imageform = ProfilePicturesForm()
+            return render(request, "network/register.html", {
+                "message": "Image upload failed.",
+                "form": form,
+                "imageform": imageform,
+            })
         # Attempt to create new user
         try:
             user = User.objects.create_user(username, email, password)
             user.save()
             profile = Profile(username=user, name=name, pronouns=pronouns, bio=bio)
             profile.save()
+            profilepicture = ProfilePictures(user_id=profile.id, picture=picture)
+            profilepicture.save()
         except IntegrityError:
+            form = ProfileForm()
+            imageform = ProfilePicturesForm()
             return render(request, "network/register.html", {
-                "message": "Username already taken."
+                "message": "Username already taken.",
+                "form": form,
+                "imageform": imageform,
+            })
+        except:
+            form = ProfileForm()
+            imageform = ProfilePicturesForm()
+            return render(request, "network/register.html", {
+                "message": "An unexpected error ocurred.",
+                "form": form,
+                "imageform": imageform,
             })
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
         form = ProfileForm()
+        imageform = ProfilePicturesForm()
         return render(request, "network/register.html", {
-            "form": form
+            "form": form,
+            "imageform": imageform,
         })
     
 
@@ -99,10 +140,9 @@ def set_profile(request):
     if request.method != "PUT":
         return JsonResponse({"error": "PUT request required."}, status=400)
     else:
-        
         id = request.user.id
-        data = ProfilePicturesForm(request.FILES.keys())
-        profile = Profile.objects.get(pk = id)
+        data = json.loads(request.body)
+        profile = Profile.objects.get(pk=id)
         try:
             profile.name=data["name"]
             profile.pronouns=data["pronouns"]
@@ -115,7 +155,7 @@ def set_profile(request):
 
 def change_picture(request):
     if request.method != "POST":
-        return JsonResponse({"error": "POST request required"})
+        return JsonResponse({"error": "POST request required"}, status=400)
     if request.method == "POST":
         form = ProfilePicturesForm(request.POST, request.FILES)
         if form.is_valid():
@@ -129,6 +169,43 @@ def change_picture(request):
                 return render(request, "network/index.html", {
                     "message": "Image update failed"
                 })
-        return render(request, "network/index.html", {
-                    "message": "Image updated successfully"
-                })
+        form = ProfileForm()
+    pictureForm = ProfilePicturesForm()
+    print(request.user.id)
+    if request.user.id is not None:
+        id = request.user.id
+        profile = Profile.objects.get(pk = id)
+        picture = ProfilePictures.objects.get(pk = id)
+        form = ProfileForm(instance=profile)
+        pictureForm = ProfilePicturesForm(instance=picture)
+    return render(request, "network/index.html", {
+        "message": "Image updated successfully",
+        "form": form,
+        "pictureForm": pictureForm,
+    })
+
+def submit_post(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+    else:
+        id = request.user.id
+        data = json.loads(request.body)
+        try:
+            post = Post(poster_id= id, content=data["content"])
+            post.save()
+            return JsonResponse({"message": "Post uploaded successfully."}, status=201)
+        except:
+            return JsonResponse({"error": "Post failed to be uploaded."}, status=500)
+
+def watch_posts(request, page):
+    if page == "posts":
+        posts = Post.objects.all()
+        return JsonResponse([post.serialize() for post in posts], safe=False)
+    elif page == "followed":
+        following = Followers.objects.filter(follower = request.user.id)
+        posts = []
+        for user in following:
+            posts += Post.objects.filter(poster=user) 
+        return JsonResponse([post.serialize() for post in posts], safe=False)
+    
+

@@ -11,5 +11,7 @@ urlpatterns = [
     path("watch_profile", views.watch_profile, name="watch_profile"),
     path("watch_profile_picture", views.watch_profile_picture, name="watch_profile_picture"),
     path("set_profile", views.set_profile, name="set_profile"),
-    path("change_picture", views.change_picture, name="change_picture")
+    path("change_picture", views.change_picture, name="change_picture"), 
+    path("submit_post", views.submit_post, name="submit_post"),
+    path("watch_posts/<str:page>", views.watch_posts, name="watch_posts"),
 ]

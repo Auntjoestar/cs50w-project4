@@ -4,20 +4,28 @@
 
 {% block body %}
 <div class="alert">
-    
+
 </div>
+<div id="message">{{ message }}</div>
     <div id="postView">
-        <div class="makePost">
+            <div id="submitView">
+                <form id="postSubmit" action="{% url 'submit_post' %}" method="POST">
+                    {% csrf_token %}
+                    {{ postForm }}
+                    <input class="btn btn-primary" type="submit" value="Upload post">
+                </form>
+            </div>
         </div>
         <!--  10 por página --> 
-        <div class="allPosts">
+        <div id="allPosts">
 
         </div>
         <div class="followingPosts">
             <!--si user está loggeado--> 
 
         </div>
-    </div>
+ </div>
+    {% if user.is_authenticated %}
     <div id="profileView">
         <!--si user está loggeado-->
         <div class="profile">
@@ -41,7 +49,6 @@
         <form id="edit-form" action="{% url 'set_profile' %}" method="put">
             {% csrf_token %} 
             {{form.as_p}}
-            {{pictureForm.as_p}}
         <input class="btn btn-primary" type="submit" value="Update Profile">
         </form>
     </div>
@@ -52,6 +59,7 @@
         <input class="btn btn-primary" type="submit" value="Update Picture">
         </form>
     </div>
+{% endif %}
 {% endblock %}
 {% block script %}
     <script src="{% static 'network/feed.js' %}"></script>

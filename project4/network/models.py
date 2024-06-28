@@ -90,6 +90,17 @@ class Post(models.Model):
 
     def __str__(self):
         return f"Post by {self.poster.username if self.poster else 'Unknown'} at {self.postTime}"
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "poster": self.poster.username if self.poster else "Unknown",
+            "content": self.content,
+            "likes": self.likes.count(),
+            "views": self.views.count(),
+            "postTime": self.postTime,
+            "updateTime": self.updateTime,
+        }
 
 class Comments(models.Model):
     commenter = models.ForeignKey(User, verbose_name="Commented By", related_name="Commenter", null=True, on_delete=models.SET_NULL)
