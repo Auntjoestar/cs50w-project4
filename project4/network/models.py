@@ -1,13 +1,13 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.utils import timezone
+from django.utils import timezone, dateformat
 
 class User(AbstractUser):
     def __str__(self):
         return self.username
 
 class Profile(models.Model):
-    username = models.OneToOneField(User, verbose_name="Username", on_delete=models.CASCADE)
+    username = models.OneToOneField(User, verbose_name="Username", related_name="profile", on_delete=models.CASCADE)
     name = models.CharField(max_length=50, blank=False, verbose_name="Name")
     PRONOUNS_CHOICES = [
         ("HH", "He/Him"),
@@ -91,15 +91,28 @@ class Post(models.Model):
     def __str__(self):
         return f"Post by {self.poster.username if self.poster else 'Unknown'} at {self.postTime}"
     
-    def serialize(self):
+    def serialize(self, liker=None):
+        if liker is not None:
+            liker = User.objects.get(pk=liker)
+            if self.likes.filter(pk=liker.id).exists():
+                liked = True
+            else:
+                liked = False
+        else:
+            liked = False
         return {
             "id": self.id,
             "poster": self.poster.username if self.poster else "Unknown",
+            "poster_name": self.poster.profile.name if self.poster else "Unknown",
+            "poster_picture": self.poster.uploader.picture.url if self.poster.uploader else "Unknown",
             "content": self.content,
             "likes": self.likes.count(),
             "views": self.views.count(),
-            "postTime": self.postTime,
-            "updateTime": self.updateTime,
+            "postTime": self.postTime.strftime("%d %b %Y, %I:%M %p") if self.postTime.strftime("%d %b %Y, %I:%M:%S %p")  == self.updateTime.strftime("%d %b %Y, %I:%M:%S %p") else "" if self.postTime else "",
+            "updateTime": f"Edited at: {self.updateTime.strftime("%d %b %Y, %I:%M %p")}" if self.postTime.strftime("%d %b %Y, %I:%M:%S %p")  != self.updateTime.strftime("%d %b %Y, %I:%M:%S %p") else "" if self.updateTime else "",
+            "datetime": self.postTime if self.postTime.strftime("%Y-%m-%d %H:%M:%S") == self.updateTime.strftime("%Y-%m-%d %H:%M:%S") else self.updateTime,
+            "likes": self.likes.count(),
+            "liked": liked,
         }
 
 class Comments(models.Model):

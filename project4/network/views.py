@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.core.paginator import Paginator
 
 from .models import User, Profile, Followers, ProfilePictures, Post, Comments, Reply, Pictures, Hashtags
 from .forms import ProfileForm, ProfilePicturesForm, PostForm, CommentsForm, ReplyForm, PicturesForm
@@ -150,7 +151,7 @@ def set_profile(request):
             profile.save()
             return JsonResponse({"message": "Profile updated successfully."}, status=201)
         except:
-            return JsonResponse({"message": "Profile update failed."}, status=500) 
+            return JsonResponse({"error": "Profile update failed."}, status=500) 
 
 
 def change_picture(request):
@@ -167,7 +168,7 @@ def change_picture(request):
                 profile.save()
             except:
                 return render(request, "network/index.html", {
-                    "message": "Image update failed"
+                    "error": "Image update failed"
                 })
         form = ProfileForm()
     pictureForm = ProfilePicturesForm()
@@ -189,18 +190,29 @@ def submit_post(request):
         return JsonResponse({"error": "POST request required."}, status=400)
     else:
         id = request.user.id
-        data = json.loads(request.body)
-        try:
-            post = Post(poster_id= id, content=data["content"])
-            post.save()
-            return JsonResponse({"message": "Post uploaded successfully."}, status=201)
-        except:
-            return JsonResponse({"error": "Post failed to be uploaded."}, status=500)
+        if id is not None:
+            data = json.loads(request.body)
+            try:
+                post = Post(poster_id= id, content=data["content"])
+                post.save()
+                return JsonResponse({"message": "Post uploaded successfully."}, status=201)
+            except:
+                return JsonResponse({"error": "Post failed to be uploaded."}, status=500)
+        else:
+            return JsonResponse({"error": "User not logged in."}, status=400)
 
 def watch_posts(request, page):
     if page == "posts":
-        posts = Post.objects.all()
-        return JsonResponse([post.serialize() for post in posts], safe=False)
+        id = request.user.id
+        if id is not None:
+            user = User.objects.get(pk=id)
+            posts = Post.objects.all()
+            posts = [post.serialize(id) for post in posts]
+            posts = [post for post in posts if post["poster"] != user.username]
+            return JsonResponse(posts, safe=False)
+        else:
+            posts = Post.objects.all()
+            return JsonResponse([post.serialize() for post in posts], safe=False)
     elif page == "followed":
         following = Followers.objects.filter(follower = request.user.id)
         posts = []
@@ -208,4 +220,34 @@ def watch_posts(request, page):
             posts += Post.objects.filter(poster=user) 
         return JsonResponse([post.serialize() for post in posts], safe=False)
     
+def like_post(request):
+    if request.method != "PUT":
+        return JsonResponse({"error": "PUT request required."}, status=400)
+    else:
+        data = json.loads(request.body)
+        id = data["post_id"]
+        post = Post.objects.get(pk=id)
+        user = request.user.id
+        try:
+            post.likes.add(user)
+            post.save()
+            return JsonResponse({"message": "Post liked successfully.",
+                                 "likes": post.likes.count()}, status=201)
+        except:
+            return JsonResponse({"error": "Post failed to be liked."}, status=500)
 
+def unlike_post(request):
+    if request.method != "PUT":
+        return JsonResponse({"error": "PUT request required."}, status=400)
+    else:
+        data = json.loads(request.body)
+        id = data["post_id"]
+        post = Post.objects.get(pk=id)
+        user = request.user.id
+        try:
+            post.likes.remove(user)
+            post.save()
+            return JsonResponse({"message": "Post unliked successfully.",
+                                 "likes": post.likes.count()}, status=201)
+        except:
+            return JsonResponse({"error": "Post failed to be unliked."}, status=500)

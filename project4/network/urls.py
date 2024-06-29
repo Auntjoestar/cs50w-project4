@@ -14,4 +14,6 @@ urlpatterns = [
     path("change_picture", views.change_picture, name="change_picture"), 
     path("submit_post", views.submit_post, name="submit_post"),
     path("watch_posts/<str:page>", views.watch_posts, name="watch_posts"),
+    path("like_post", views.like_post, name="like_post"),
+    path("unlike_post", views.unlike_post, name="unlike_post"),
 ]
