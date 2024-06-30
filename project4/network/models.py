@@ -46,7 +46,9 @@ class Profile(models.Model):
             "pronouns": self.pronouns,
             "bio": self.bio,
             "joined": self.joined,
-            "updated_at": self.updated_at
+            "updated_at": self.updated_at,
+            "followers": self.username.user.count(),
+            "following": self.username.follower.count(),
         }
 
 class Followers(models.Model):
@@ -103,6 +105,7 @@ class Post(models.Model):
         return {
             "id": self.id,
             "poster": self.poster.username if self.poster else "Unknown",
+            "poster_id": self.poster.id if self.poster else "Unknown",
             "poster_name": self.poster.profile.name if self.poster else "Unknown",
             "poster_picture": self.poster.uploader.picture.url if self.poster.uploader else "Unknown",
             "content": self.content,

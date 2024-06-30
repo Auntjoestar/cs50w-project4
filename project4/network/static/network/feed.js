@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#posts').addEventListener("click", () => load_posts());
     element_exists('#edit-profile', edit_profile);
     element_exists('#change_picture', edit_profile_picture);
+    element_exists('#following', load_following_posts);
     if (document.querySelector("#message").innerHTML == "Image updated successfully") {
         load_profile()
     }
@@ -22,16 +23,63 @@ function load_profile() {
 
     get_profile()
     .then(datos => {
-        console.log(datos)
-        set_profile(datos)
+        console.log(datos);
+        set_profile(datos);
     })
     get_profile_picture()
     .then(
         datos => {
-            console.log(datos);
             document.querySelector("#profile-picture").src = datos[0].picture;
         }
     )
+}
+
+function load_user(username) {
+    document.querySelector("#profileView").style.display = "block";
+    document.querySelector("#postView").style.display = "none";
+    document.querySelector("#editProfileView").style.display = "none";
+    document.querySelector("#editImageView").style.display = "none";
+    document.querySelector("#submitView").style.display = 'none';
+    console.log(username)
+    get_user(username)
+    .then(datos => {
+        console.log(datos);
+        set_user(datos.profile);
+    })
+    get_user_picture(username) 
+    .then(
+        datos => {
+            document.querySelector("#profile-picture").src = datos[0].picture;
+        }
+    )
+    document.querySelector("#edit-profile").style.display = "none";
+    document.querySelector("#change_picture").style.display = "none";
+
+    form = document.querySelector("#followForm")
+    alert = document.querySelector(".alert")
+
+    form.onsubmit = (e) => {
+        e.preventDefault();
+        const username = document.querySelector("#follow").value;
+        follow_user(username)
+        .then(result => {
+            if (result.message == "User followed successfully.") {
+                alert.innerHTML = ''
+                alert.style.display = 'block';
+                const message = document.createElement('strong')
+                message.innerHTML = result.message;
+                alert.appendChild(message)
+                load_user(username);
+              }
+              else {
+                alert.innerHTML = ''
+                alert.style.display = 'block';
+                const message = document.createElement('strong')
+                message.innerHTML = result.error;
+                alert.appendChild(message)
+              }
+        })
+    }
 }
 
 function edit_profile() {
@@ -83,10 +131,22 @@ function load_posts() {
     element_exists_display("#editProfileView");
     element_exists_display("#editImageView");
     document.querySelector("#submitView") != null ? document.querySelector("#submitView").style.display = 'block' : {}
+    url = new URL(window.location.href);
+    const page = url.searchParams.get("page") != null ? url.searchParams.get("page") : 1;
+    const previous = document.querySelector("#previousPage");
+    const next = document.querySelector("#nextPage");
+    const currentPage = document.querySelector("#page");
+    currentPage.innerHTML = parseInt(page);
+    previous.value = parseInt(page) - 1;
+    next.value = parseInt(page) + 1;
 
-    get_posts() 
+
+    get_posts(page) 
     .then(content => {
-        create_post(content)
+        document.querySelector("#allPosts").innerHTML = '';
+        create_post(content.posts);
+        max_page(next, content);
+        min_page(previous, content);
     })
 
     form = document.querySelector("#postSubmit")
@@ -102,6 +162,7 @@ function load_posts() {
         .then(result => {
             if (result.message == "Post uploaded successfully.") {
                 load_posts();
+                document.querySelector("#id_content").value = '';
               }
             else if (result.error == "User not logged in.") {
                 alert.innerHTML = ''
@@ -125,8 +186,81 @@ function load_posts() {
     }
 }
 
+function load_following_posts() {
+    element_exists_display("#profileView");
+    document.querySelector("#postView").style.display = "block";
+    element_exists_display("#editProfileView");
+    element_exists_display("#editImageView");
+    document.querySelector("#submitView") != null ? document.querySelector("#submitView").style.display = 'block' : {}
+    url = new URL(window.location.href);
+    const page = url.searchParams.get("page") != null ? url.searchParams.get("page") : 1;
+    const previous = document.querySelector("#previousPage");
+    const next = document.querySelector("#nextPage");
+    const currentPage = document.querySelector("#page");
+    currentPage.innerHTML = parseInt(page);
+    previous.value = parseInt(page) - 1;
+    next.value = parseInt(page) + 1;
+
+    get_following_posts(page)
+    .then(content => {
+        document.querySelector("#allPosts").innerHTML = '';
+        create_post(content.posts);
+        max_page(next, content);
+        min_page(previous, content);
+    })
+
+    form = document.querySelector("#postSubmit")
+    alert = document.querySelector(".alert")
+
+    content = document.querySelector("#id_content")
+
+    form.onsubmit = (e) => {
+        e.preventDefault();
+        const content = document.querySelector("#id_content").value;
+        console.log(content)
+        upload_post(content)
+        .then(result => {
+            if (result.message == "Post uploaded successfully.") {
+                load_posts();
+                document.querySelector("#id_content").value = '';
+              }
+            else if (result.error == "User not logged in.") {
+                alert.innerHTML = ''
+                alert.style.display = 'block';
+                const message = document.createElement('strong')
+                message.innerHTML = "You're not currently logged in. "
+                const url = document.createElement('a')
+                url.innerHTML = "If you want to make a post, please login here."
+                url.href = "/login"
+                alert.appendChild(message);
+                alert.appendChild(url);
+            }
+              else {
+                alert.innerHTML = ''
+                alert.style.display = 'block';
+                const message = document.createElement('strong')
+                message.innerHTML = result.error;
+                alert.appendChild(message)
+              }
+        }
+    )
+    }
+}
+
 async function get_profile() {
     const profile = await fetch("/watch_profile") ;
+    const datos = await profile.json();
+    return datos;
+}
+
+async function get_user(username) {
+    const profile = await fetch(`/watch_user/${username}`) ;
+    const datos = await profile.json();
+    return datos;
+}
+
+async function get_user_picture(username) {
+    const profile = await fetch(`/watch_user_picture/${username}`) ;
     const datos = await profile.json();
     return datos;
 }
@@ -211,8 +345,14 @@ async function unlike_post(post_id) {
     return result;
 }
 
-async function get_posts() {
-    const posts = await fetch("/watch_posts/posts") ;
+async function get_posts(page) {
+    const posts = await fetch(`/watch_posts/posts?page=${page}`) ;
+    const content = await posts.json();
+    return content;
+}
+
+async function get_following_posts(page) {
+    const posts = await fetch(`/watch_posts/following?page=${page}`) ;
     const content = await posts.json();
     return content;
 }
@@ -223,11 +363,41 @@ async function go_to_login() {
     return message;
 }
 
+async function follow_user(username) {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const request = new Request(
+        '/follow',
+        {
+            method: 'POST',
+            headers: {'X-CSRFToken': csrftoken},
+            body: JSON.stringify({
+                username: `${username}`
+            }),
+            mode: 'same-origin' // Do not send CSRF token to another domain.
+        }
+    );
+    const follow = await fetch(request);
+    const result = await follow.json();
+    return result;
+}
+
 function set_profile(datos) {
     document.querySelector("#name").innerHTML = datos[0].name;
     document.querySelector("#username").innerHTML = `@${datos[0].username}`;
     document.querySelector("#bio").innerHTML= datos[0].bio;
     document.querySelector("#joined").innerHTML = datos[0].joined;
+    document.querySelector("#followings").innerHTML = datos[0].following;
+    document.querySelector("#followers").innerHTML = datos[0].followers;
+}
+
+function set_user(datos) {
+    document.querySelector("#name").innerHTML = datos[0].name;
+    document.querySelector("#username").innerHTML = `@${datos[0].username}`;
+    document.querySelector("#bio").innerHTML= datos[0].bio;
+    document.querySelector("#joined").innerHTML = datos[0].joined;
+    document.querySelector("#followings").innerHTML = datos[0].following;
+    document.querySelector("#followers").innerHTML = datos[0].followers;
+    document.querySelector('#follow').value = datos[0].username;
 }
 
 function element_exists(query, function_name)
@@ -242,7 +412,7 @@ function element_exists_display(query) {
 function create_post(post) {
     count = 0;
     post.forEach(element => {
-        if (count < 10) {
+        console.log(element)
         const post = document.createElement("div");
         post.className = "post";
         const time = element.postTime != "" ? element.postTime : element.updateTime
@@ -252,7 +422,8 @@ function create_post(post) {
         </div>
         <div class="full-post">
         <div class="post-header">
-            <h3>${element.poster_name}</h3>
+            <a id="userProfile" href="#profileView/${element.poster_name}">
+            <h3>${element.poster_name}</h3></a>
             <h4>@${element.poster}</h4>
         </div>
         <div class="post-content">
@@ -311,8 +482,11 @@ function create_post(post) {
         </div>
         </div>
         `
-        console.log(element.likers)
-        if (element.likers == 1){
+        const userProfile = post.querySelector("#userProfile")
+        userProfile.addEventListener("click", () => {
+            load_user(element.poster)
+        })
+        if (element.liked == true){
             post.querySelector(`#checkbox_${count}`).checked = true
         }
         document.querySelector("#allPosts").appendChild(post);
@@ -350,7 +524,6 @@ function create_post(post) {
             }
         })
         count++;
-    }
     });
     
 }
@@ -367,4 +540,18 @@ function watch_post(post) {
             <div class="poster-name">
                 <h3>${post.poster}</h3>
   `
+}
+
+function max_page(next, content) {
+    if (next.value > parseInt(content.maxPage)) {
+        document.querySelector("#next").style.display = "none";
+        next.value = parseInt(content.maxPages);
+    }
+}
+
+function min_page(previous, content) {
+    if (previous.value < 1) {
+        document.querySelector("#previous").style.display = "none";
+        previous.value = parseInt(content.maxPages);
+    }
 }

@@ -16,4 +16,7 @@ urlpatterns = [
     path("watch_posts/<str:page>", views.watch_posts, name="watch_posts"),
     path("like_post", views.like_post, name="like_post"),
     path("unlike_post", views.unlike_post, name="unlike_post"),
+    path("watch_user/<str:username>", views.watch_user, name="watch_user"),
+    path("watch_user_picture/<str:username>", views.watch_user_picture, name="watch_user_picture"),
+    path("follow", views.follow, name="follow"),
 ]

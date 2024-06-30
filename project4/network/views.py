@@ -15,7 +15,6 @@ def index(request):
     form = ProfileForm()
     pictureForm = ProfilePicturesForm()
     postForm = PostForm()
-    print(request.user.id)
     if request.user.id is not None:
         id = request.user.id
         profile = Profile.objects.get(pk = id)
@@ -98,10 +97,6 @@ def register(request):
         try:
             user = User.objects.create_user(username, email, password)
             user.save()
-            profile = Profile(username=user, name=name, pronouns=pronouns, bio=bio)
-            profile.save()
-            profilepicture = ProfilePictures(user_id=profile.id, picture=picture)
-            profilepicture.save()
         except IntegrityError:
             form = ProfileForm()
             imageform = ProfilePicturesForm()
@@ -110,14 +105,10 @@ def register(request):
                 "form": form,
                 "imageform": imageform,
             })
-        except:
-            form = ProfileForm()
-            imageform = ProfilePicturesForm()
-            return render(request, "network/register.html", {
-                "message": "An unexpected error ocurred.",
-                "form": form,
-                "imageform": imageform,
-            })
+        profile = Profile(username_id=user.id, name=name, pronouns=pronouns, bio=bio)
+        profile.save()
+        profilePicture = ProfilePictures(user_id=user.id, picture=picture)
+        profilePicture.save()
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
@@ -162,7 +153,6 @@ def change_picture(request):
         if form.is_valid():
             id = request.user.id
             profile = ProfilePictures.objects.get(pk=id)
-            print(form.cleaned_data["picture"])
             try: 
                 profile.picture = form.cleaned_data["picture"]
                 profile.save()
@@ -172,7 +162,6 @@ def change_picture(request):
                 })
         form = ProfileForm()
     pictureForm = ProfilePicturesForm()
-    print(request.user.id)
     if request.user.id is not None:
         id = request.user.id
         profile = Profile.objects.get(pk = id)
@@ -209,16 +198,34 @@ def watch_posts(request, page):
             posts = Post.objects.all()
             posts = [post.serialize(id) for post in posts]
             posts = [post for post in posts if post["poster"] != user.username]
-            return JsonResponse(posts, safe=False)
+            paginator = Paginator(posts, 10)
+            page_number = request.GET.get('page')
+            max_page = paginator.num_pages
+            page_obj = paginator.get_page(page_number)
+            return JsonResponse({"maxPage": max_page,
+                                 "posts": [post for post in page_obj],
+                                    },safe=False)
         else:
             posts = Post.objects.all()
-            return JsonResponse([post.serialize() for post in posts], safe=False)
-    elif page == "followed":
+            paginator = Paginator(posts, 10)
+            page_number = request.GET.get('page')
+            max_page = paginator.num_pages
+            page_obj = paginator.get_page(page_number)
+            return JsonResponse({"maxPage": max_page,
+                                 "posts": [post.serialize() for post in page_obj],
+                                 },safe=False)
+    elif page == "following":
         following = Followers.objects.filter(follower = request.user.id)
         posts = []
         for user in following:
-            posts += Post.objects.filter(poster=user) 
-        return JsonResponse([post.serialize() for post in posts], safe=False)
+            posts += Post.objects.filter(poster=user)
+        paginator = Paginator(posts, 10)
+        page_number = request.GET.get('page')
+        max_page = paginator.num_pages
+        page_obj = paginator.get_page(page_number)
+        return JsonResponse({"maxPage": max_page,
+                             "posts": [post.serialize() for post in page_obj],
+                             },safe=False) 
     
 def like_post(request):
     if request.method != "PUT":
@@ -251,3 +258,50 @@ def unlike_post(request):
                                  "likes": post.likes.count()}, status=201)
         except:
             return JsonResponse({"error": "Post failed to be unliked."}, status=500)
+
+def watch_user(request, username):
+    if request.method != "GET":
+        return JsonResponse({"error": "GET request required."}, status=400)
+    try:
+        user = User.objects.get(username=username)
+        profile = Profile.objects.get(username_id=user.id)
+        profilePicture = ProfilePictures.objects.get(user_id=user.id)
+        return JsonResponse({"profile": [profile.serialize()],
+                             "picture": [profilePicture.serialize()]
+                             }, safe=False)
+    except:
+        return JsonResponse({"error": "User not found."}, status=404)
+
+def watch_user_picture(request, username):
+    if request.method != "GET":
+        return JsonResponse({"error": "GET request required."}, status=400)
+    try:
+        user = User.objects.get(username=username)
+        profilePicture = ProfilePictures.objects.get(user_id=user.id)
+        return JsonResponse([profilePicture.serialize()], safe=False)
+    except:
+        return JsonResponse({"error": "User not found."}, status=404)
+    
+def follow(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+    try:
+        print("hello")
+        data = json.loads(request.body)
+        print(data["username"])
+        user = User.objects.get(username=data["username"])
+        print(user)
+        try:
+            follower = Followers.objects.get(user=user)
+            follower.follower.add(request.user.id)
+            follower.save()
+            return JsonResponse({"message": "User followed successfully."}, status=201)
+        except:
+            followUser = User.objects.get(username=user)
+            follower = Followers(user=followUser)
+            follower.save()
+            follower.follower.add(request.user.id)
+            follower.save()
+            return JsonResponse({"message": "User followed successfully."}, status=201)
+    except: 
+        return JsonResponse({"error": "User failed to be followed."}, status=500)

@@ -21,7 +21,6 @@
         </div>
         <div class="followingPosts">
             <!--si user está loggeado--> 
-
         </div>
  </div>
     {% if user.is_authenticated %}
@@ -33,14 +32,21 @@
             <a id="change_picture" href="#editImageView">change_picturee</a>
             <p id="name"></p>
             <p id="username"></p>
+            <div id="followView">
+                <div id="followings">
+    
+                </div>
+                <div id="followers">
+        
+                </div>
+                <form id="followForm" action="{% url 'follow' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" id="follow" name="follow" value="">
+                    <input class="btn btn-primary" type="submit" value="Follow">
+                </form>
+            </div>
             <p id="bio"></p>
             <p id="joined"></p>
-        </div>
-        <div class="following">
-
-        </div>
-        <div class="follower">
-
         </div>
     </div>
     <div id="editProfileView">
@@ -59,6 +65,17 @@
         </form>
     </div>
 {% endif %}
+<div id="pagination">
+    <form id="previousPageForm" method="get">
+        <input type="hidden" id="previousPage" name="page" value="">
+        <button type="submit" id="previous" class="btn btn-primary">Previous</button>
+    </form>
+    <span id="page"></span>
+    <form method="get" id="nextPageForm">
+        <input type="hidden" id="nextPage" name="page" value="">
+        <button type="submit" id="next" class="btn btn-primary">Next</button>
+    </form>
+</div>
 {% endblock %}
 {% block script %}
     <script src="{% static 'network/feed.js' %}"></script>
