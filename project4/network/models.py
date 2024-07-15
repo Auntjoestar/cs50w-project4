@@ -27,6 +27,7 @@ class Profile(models.Model):
     )
     bio = models.CharField(max_length=160, blank=False, verbose_name="Bio")
     joined = models.DateTimeField(default=timezone.now(), verbose_name="Joined at")
+    followers = models.ManyToManyField(User, verbose_name="Followed by", related_name="follower")
     updated_at = models.DateTimeField(default=timezone.now(), verbose_name="Updated at")
 
     def save(self):
@@ -45,19 +46,12 @@ class Profile(models.Model):
             "name": self.name,
             "pronouns": self.pronouns,
             "bio": self.bio,
-            "joined": self.joined,
-            "updated_at": self.updated_at,
-            "followers": self.username.user.count(),
-            "following": self.username.follower.count(),
+            "joined": self.joined.strftime("%d %b %Y"),
+            "updated_at": self.updated_at.strftime("%d %b %Y"),
+            "following": self.followers.count(),
+            "following_list": [follower.username for follower in self.followers.all()],
+            "followers": self.username.follower.count(),
         }
-
-class Followers(models.Model):
-    user = models.ForeignKey(User, verbose_name="User", related_name="user", on_delete=models.CASCADE)
-    follower = models.ManyToManyField(User, verbose_name="Followed By", related_name="follower")
-    timestamp = models.DateTimeField(default=timezone.now(), verbose_name="Followed at")
-
-    def __str__(self):
-        return f"{self.user.username} is followed by {self.follower.count()} users"
 
 class ProfilePictures(models.Model):
     user = models.OneToOneField(User, verbose_name="User", related_name="uploader", on_delete=models.CASCADE)
@@ -118,62 +112,7 @@ class Post(models.Model):
             "liked": liked,
         }
 
-class Comments(models.Model):
-    commenter = models.ForeignKey(User, verbose_name="Commented By", related_name="Commenter", null=True, on_delete=models.SET_NULL)
-    comment = models.CharField(max_length=280, blank=False, verbose_name="Comment")
-    post = models.ForeignKey(Post, verbose_name="Commented On", related_name="commented_post", on_delete=models.CASCADE)
-    likes = models.ManyToManyField(User, verbose_name="Comment Liked by", related_name="commentliker")
-    commentedAt = models.DateTimeField(default=timezone.now(), verbose_name="Posted at")
-    updatedAt = models.DateTimeField(default=timezone.now(), verbose_name="Updated at")
 
-    class Meta:
-        ordering = ['-commentedAt']
-
-    def save(self):
-        ''' On save, update timestamps '''
-        if not self.id:
-            self.commentedAt = timezone.now()
-        self.updatedAt = timezone.now()
-        return super(Comments, self).save()
-
-    def __str__(self):
-        return f"Comment by {self.commenter.username if self.commenter else 'Unknown'} on {self.post.content[:20]}"
-
-class Reply(models.Model):
-    replier = models.ForeignKey(User, verbose_name="Replied by", related_name="replier", null=True, on_delete=models.SET_NULL)
-    reply = models.CharField(max_length=280, blank=False, verbose_name="Reply")
-    repliedOn = models.ForeignKey(Comments, blank=False, verbose_name="Replied to", on_delete=models.CASCADE)
-    repliedAt = models.DateTimeField(default=timezone.now(), verbose_name="Replied at")
-    UpdatedAt = models.DateTimeField(default=timezone.now(), verbose_name="Updated at")
-
-    class Meta:
-        ordering = ['-repliedAt']
-
-    def save(self):
-        ''' On save, update timestamps '''
-        if not self.id:
-            self.repliedAt = timezone.now()
-        self.UpdatedAt = timezone.now()
-        return super(Reply, self).save()
-
-    def __str__(self):
-        return f"Reply by {self.replier.username if self.replier else 'Unknown'} on {self.repliedOn.comment[:20]}"
-
-class Pictures(models.Model):
-    post = models.ForeignKey(Post, verbose_name="Uploaded on", related_name="uploaded", on_delete=models.CASCADE)
-    picture = models.ImageField(upload_to="static/network/pictures", verbose_name="File")
-    timestamp = models.DateTimeField(default=timezone.now(), verbose_name="Uploaded at")
-
-    def __str__(self):
-        return f"Picture for post {self.post.id}"
-
-class Hashtags(models.Model):
-    post = models.ManyToManyField(Post, verbose_name="Post", related_name="post")
-    hashtag = models.CharField(max_length=140, blank=True, verbose_name="Hashtag")
-    timestamp = models.DateTimeField(default=timezone.now, verbose_name="Uploaded at")
-
-    def __str__(self):
-        return f"Hashtag: {self.hashtag}"
 
 
 

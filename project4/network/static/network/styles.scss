@@ -1,0 +1,723 @@
+svg {
+    cursor: pointer;
+    overflow: visible;
+    width: 45px;
+    margin: 20px;
+}
+
+svg #heart {
+    transform-origin: center;
+    animation: animateHeartOut 0.3s linear forwards;
+}
+
+svg #main-circ {
+    transform-origin: 29.5px 29.5px;
+}
+
+.checkbox {
+    display: none;
+}
+
+.checkbox:checked + label svg #heart {
+    transform: scale(0.2);
+    fill: #e2264d;
+    animation: animateHeart 0.3s linear forwards 0.25s;
+}
+
+.checkbox:checked + label svg #main-circ {
+    transition: all 2s;
+    animation: animateCircle 0.3s linear forwards;
+    opacity: 1;
+}
+
+.checkbox:checked + label svg #grp1 {
+    opacity: 1;
+    transition: 0.1s all 0.3s;
+}
+
+.checkbox:checked + label svg #grp1 #oval1 {
+    transform: scale(0) translate(0, -30px);
+    transform-origin: 0 0 0;
+    transition: 0.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp1 #oval2 {
+    transform: scale(0) translate(10px, -50px);
+    transform-origin: 0 0 0;
+    transition: 1.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp2 {
+    opacity: 1;
+    transition: 0.1s all 0.3s;
+}
+
+.checkbox:checked + label svg #grp2 #oval1 {
+    transform: scale(0) translate(30px, -15px);
+    transform-origin: 0 0 0;
+    transition: 0.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp2 #oval2 {
+    transform: scale(0) translate(60px, -15px);
+    transform-origin: 0 0 0;
+    transition: 1.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp3 {
+    opacity: 1;
+    transition: 0.1s all 0.3s;
+}
+
+.checkbox:checked + label svg #grp3 #oval1 {
+    transform: scale(0) translate(30px, 0px);
+    transform-origin: 0 0 0;
+    transition: 0.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp3 #oval2 {
+    transform: scale(0) translate(60px, 10px);
+    transform-origin: 0 0 0;
+    transition: 1.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp4 {
+    opacity: 1;
+    transition: 0.1s all 0.3s;
+}
+
+.checkbox:checked + label svg #grp4 #oval1 {
+    transform: scale(0) translate(30px, 15px);
+    transform-origin: 0 0 0;
+    transition: 0.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp4 #oval2 {
+    transform: scale(0) translate(40px, 50px);
+    transform-origin: 0 0 0;
+    transition: 1.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp5 {
+    opacity: 1;
+    transition: 0.1s all 0.3s;
+}
+
+.checkbox:checked + label svg #grp5 #oval1 {
+    transform: scale(0) translate(-10px, 20px);
+    transform-origin: 0 0 0;
+    transition: 0.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp5 #oval2 {
+    transform: scale(0) translate(-60px, 30px);
+    transform-origin: 0 0 0;
+    transition: 1.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp6 {
+    opacity: 1;
+    transition: 0.1s all 0.3s;
+}
+
+.checkbox:checked + label svg #grp6 #oval1 {
+    transform: scale(0) translate(-30px, 0px);
+    transform-origin: 0 0 0;
+    transition: 0.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp6 #oval2 {
+    transform: scale(0) translate(-60px, -5px);
+    transform-origin: 0 0 0;
+    transition: 1.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp7 {
+    opacity: 1;
+    transition: 0.1s all 0.3s;
+}
+
+.checkbox:checked + label svg #grp7 #oval1 {
+    transform: scale(0) translate(-30px, -15px);
+    transform-origin: 0 0 0;
+    transition: 0.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp7 #oval2 {
+    transform: scale(0) translate(-55px, -30px);
+    transform-origin: 0 0 0;
+    transition: 1.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp2 {
+    opacity: 1;
+    transition: 0.1s opacity 0.3s;
+}
+
+.checkbox:checked + label svg #grp3 {
+    opacity: 1;
+    transition: 0.1s opacity 0.3s;
+}
+
+.checkbox:checked + label svg #grp4 {
+    opacity: 1;
+    transition: 0.1s opacity 0.3s;
+}
+
+.checkbox:checked + label svg #grp5 {
+    opacity: 1;
+    transition: 0.1s opacity 0.3s;
+}
+
+.checkbox:checked + label svg #grp6 {
+    opacity: 1;
+    transition: 0.1s opacity 0.3s;
+}
+
+.checkbox:checked + label svg #grp7 {
+    opacity: 1;
+    transition: 0.1s opacity 0.3s;
+}
+
+.alert {
+    a {
+        color:#222831;
+    }
+}
+
+@keyframes animateCircle {
+    40% {
+        transform: scale(10);
+        opacity: 1;
+        fill: #dd4688;
+    }
+    55% {
+        transform: scale(11);
+        opacity: 1;
+        fill: #d46abf;
+    }
+    65% {
+        transform: scale(12);
+        opacity: 1;
+        fill: #cc8ef5;
+    }
+    75% {
+        transform: scale(13);
+        opacity: 1;
+        fill: transparent;
+        stroke: #cc8ef5;
+        stroke-width: 0.5;
+    }
+    85% {
+        transform: scale(17);
+        opacity: 1;
+        fill: transparent;
+        stroke: #cc8ef5;
+        stroke-width: 0.2;
+    }
+    95% {
+        transform: scale(18);
+        opacity: 1;
+        fill: transparent;
+        stroke: #cc8ef5;
+        stroke-width: 0.1;
+    }
+    100% {
+        transform: scale(19);
+        opacity: 1;
+        fill: transparent;
+        stroke: #cc8ef5;
+        stroke-width: 0;
+    }
+}
+@keyframes animateHeart {
+    0% {
+        transform: scale(0.2);
+    }
+    40% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+@keyframes animateHeartOut {
+    0% {
+        transform: scale(1.4);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+$background-color: #222831;
+$line-color: #31363f;
+$font-color: #eeeeee;
+
+@media (min-width: 768px) {
+    body {
+        height: 100vmax;
+        width: 100vw;
+        background-color: $background-color;
+        color: $font-color;
+        hr {
+            border: 0.2vh solid $line-color;
+        }
+        a {
+            color: $font-color;
+        }
+        .nav {
+            float: left;
+            width: 25%;
+            height: 100vmax;
+
+            border-right: 0.2vw solid $line-color;
+            nav {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start !important;
+                gap: 0;
+                position: fixed;
+                ul {
+                    display: flex;
+                    flex-direction: column;
+                    li {
+                        margin: 10px;
+                    }
+                }
+            }
+        }
+        .body {
+            float: left;
+            width: 50%;
+        }
+        .sidebar {
+            float: right;
+            width: 25%;
+            height: 100vmax;
+            border-left: 0.2vw solid $line-color;
+            nav {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start !important;
+                gap: 0;
+                position: fixed;
+                height: 100vh;
+                ul {
+                    display: flex;
+                    flex-direction: column;
+                    li {
+                        margin: 10px;
+                    }
+                }
+            }
+        }
+        .post {
+            display: flex;
+            border-bottom: 0.2vh solid $line-color;
+            .poster-picture {
+                width: 5vw;
+                height: 5vw;
+                border-radius: 50%;
+                margin: 1%;
+                img {
+                    width: 5vw;
+                    height: 5vw;
+                    border-radius: 50%;
+                }
+            }
+            .full-post {
+                width: 100%;
+                .post-header {
+                    display: flex;
+                    gap: 3%;
+                    justify-content: flex-start;
+                    margin: 1%;
+                    a {
+                        color: $font-color;
+                    }
+                    h3 {
+                        font-size: 1.2rem;
+                        margin: 0;
+                    }
+                    p {
+                        margin: 0;
+                    }
+                }
+                .post-content {
+                    margin: 1%;
+                    p {
+                        margin: 0;
+                    }
+                }
+                .post-footer {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    margin: 1%;
+                    gap: 1%;
+                    .likes {
+                        align-self: flex-end;
+                        margin-right: 1%;
+                        display: flex;
+                        span {
+                            align-self: center;
+                        }
+                        svg {
+                            margin: 0.5%;
+                        }
+                    }
+                }
+            }
+        }
+        #pagination {
+            position: fixed;
+            bottom: 0;
+            span {
+                display: none;
+            }
+        }
+        .profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1%;
+            a {
+                border: 0.2vh solid $line-color;
+                border-radius: 3vw;
+                padding: 1vw;
+                text-align: center;
+            }
+            .profilediv {
+                display: flex;
+                justify-content: space-between;
+                padding: 3%;
+                width: 100%;
+                .profile-edit {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1vh;
+                }
+            }
+            #profile-picture {
+                width: 10vw;
+                height: 10vw;
+                border-radius: 50%;
+                border: grey solid 0.6vw;
+                img {
+                    width: 10vw;
+                    height: 10vw;
+                    border-radius: 50%;
+                }
+            }
+            .profile-info {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                gap: 1%;
+                width: 100%;
+                padding: 3%;
+                h3 {
+                    font-size: 1.5rem;
+                }
+                p {
+                    margin: 0;
+                }
+            }
+        }
+    }
+    #submitView {
+        #id_content {
+            background-color: $background-color;
+            width: 50%;
+            height: 20vh;
+            border: 0;
+            resize: none;
+            margin-left: 1%;
+            caret-color: $font-color;
+            color: $font-color;
+            font-weight: bold;
+        }
+        #id_content:focus {
+            outline: none;
+        }
+        .button {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 1%;
+            input {
+                border-radius: 2vw;
+            }
+        }
+    }
+    .alert {
+        margin: 1%;
+    }
+    #editProfileView {
+        margin: 1%;
+        label {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .edit-submit-btn {
+            width: 35%;
+            border: 0.2vh solid $line-color;
+            border-radius: 2vw;
+            padding: 1vw;
+            margin: 1%;
+        }
+    }
+    #editImageView {
+        margin: 1%;
+        label {
+            font-size: 1rem;
+            font-weight: bold;
+            display: block;
+        }
+        .edit-submit-btn {
+            width: 35%;
+            border: 0.2vh solid $line-color;
+            border-radius: 2vw;
+            padding: 1vw;
+            margin: 1%;
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    body {
+        height: 100vmax;
+        background-color: $background-color;
+        color: $font-color;
+        display: flex;
+        flex-direction: column;
+        hr {
+            border: 0.2vh solid $line-color;
+        }
+        a {
+            color: $font-color;
+        }
+        .navbar {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1%;
+            background-color: $background-color;
+            border-bottom: 0.2vh solid $line-color;
+            font-size: 0.9rem;
+            .navbar-brand {
+                font-size: 1.5rem;
+                font-weight: bold;
+                margin-left: 1%;
+            }
+            .navbar-toggler {
+                margin-right: 1%;
+            }
+        }
+        .nav {
+            height: fit-content;
+            position: sticky;
+            top: 0;
+            border-right: 0.2vw solid $line-color;
+            nav {
+                background-color: $background-color;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start !important;
+                gap: 0;
+                ul {
+                    display: flex;
+                    flex-direction: row;
+                    li {
+                        margin: 10px;
+                    }
+                }
+            }
+        }
+        .body {
+            margin: 2%;
+        }
+        .sidebar {
+            display: none;
+        }
+        .post {
+            display: flex;
+            border-bottom: 0.2vh solid $line-color;
+            .poster-picture {
+                width: 5vw;
+                height: 5vw;
+                border-radius: 50%;
+                margin: 1%;
+                img {
+                    width: 5vw;
+                    height: 5vw;
+                    border-radius: 50%;
+                }
+            }
+            .full-post {
+                width: 100%;
+                .post-header {
+                    display: flex;
+                    gap: 3%;
+                    justify-content: flex-start;
+                    margin: 1%;
+                    a {
+                        color: $font-color;
+                    }
+                    h3 {
+                        font-size: 1.2rem;
+                        margin: 0;
+                    }
+                    p {
+                        margin: 0;
+                    }
+                }
+                .post-content {
+                    margin: 1%;
+                    p {
+                        margin: 0;
+                    }
+                }
+                .post-footer {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    margin: 1%;
+                    gap: 1%;
+                    .likes {
+                        align-self: flex-end;
+                        margin-right: 1%;
+                        display: flex;
+                        span {
+                            align-self: center;
+                        }
+                        svg {
+                            margin: 0.5%;
+                        }
+                    }
+                }
+            }
+        }
+        #pagination {
+            position: fixed;
+            bottom: 0;
+            span {
+                display: none;
+            }
+        }
+        .profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1%;
+            a {
+                border: 0.2vh solid $line-color;
+                border-radius: 3vw;
+                padding: 1vw;
+                text-align: center;
+            }
+            .profilediv {
+                display: flex;
+                justify-content: space-between;
+                padding: 3%;
+                width: 100%;
+                .profile-edit {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1vh;
+                }
+            }
+            #profile-picture {
+                width: 10vw;
+                height: 10vw;
+                border-radius: 50%;
+                border: grey solid 0.6vw;
+                img {
+                    width: 10vw;
+                    height: 10vw;
+                    border-radius: 50%;
+                }
+            }
+            .profile-info {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                gap: 1%;
+                width: 100%;
+                padding: 3%;
+                h3 {
+                    font-size: 1.5rem;
+                }
+                p {
+                    margin: 0;
+                }
+            }
+        }
+    }
+    #submitView {
+        #id_content {
+            background-color: $background-color;
+            width: 50%;
+            height: 20vh;
+            border: 0;
+            resize: none;
+            margin-left: 1%;
+            caret-color: $font-color;
+            color: $font-color;
+            font-weight: bold;
+        }
+        #id_content:focus {
+            outline: none;
+        }
+        .button {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 1%;
+            input {
+                border-radius: 2vw;
+            }
+        }
+    }
+    .alert {
+        margin: 1%;
+    }
+    #editProfileView {
+        margin: 1%;
+        label {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .edit-submit-btn {
+            width: 35%;
+            border: 0.2vh solid $line-color;
+            border-radius: 2vw;
+            padding: 1vw;
+            margin: 1%;
+        }
+    }
+    #editImageView {
+        margin: 1%;
+        label {
+            font-size: 1rem;
+            font-weight: bold;
+            display: block;
+        }
+        .edit-submit-btn {
+            width: 35%;
+            border: 0.2vh solid $line-color;
+            border-radius: 2vw;
+            padding: 1vw;
+            margin: 1%;
+        }
+    }
+    #pagination {
+        position: fixed;
+        bottom: 0;
+        span {
+            display: none;
+        }
+    }
+}

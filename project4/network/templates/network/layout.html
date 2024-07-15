@@ -3,30 +3,33 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>{% block title %}Social Network{% endblock %}</title>
+        <title>{% block title %}Girtopolis{% endblock %}</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="{% static 'network/styles.css' %}" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% block script %}
         {% endblock %}
     </head>
     <body>
-
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a id="index" class="navbar-brand" href="#">Network</a>
+<div class="nav">
+        <nav class="navbar">
+            <a id="index" class="navbar-brand" href="#">Girtopolis 
+                <img src="{% static 'network/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+            </a>
           
             <div>
               <ul class="navbar-nav mr-auto">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a id="profile" class="nav-link" href="#profileView"><strong>{{ user.username }}</strong></a>
+                        <a id="profile" class="nav-link" href="#profileView"><strong>Profile</strong></a>
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                  <a id="posts" class="nav-link" href="{% url 'index' %}">All Posts</a>
+                  <a id="posts" class="nav-link" href="#">All Posts</a>
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a id="following" class="nav-link" href="#">Following</a>
+                        <a id="following" class="nav-link" href="#followingPosts">Following</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
@@ -42,10 +45,13 @@
               </ul>
             </div>
           </nav>
-        
+        </div>
         <div class="body">
             {% block body %}
             {% endblock %}
+        </div>
+        <div class="sidebar">
+
         </div>
     </body>
 </html>

@@ -1,82 +1,103 @@
 {% extends "network/layout.html" %}
 {% load static %}
 
-
 {% block body %}
 <div class="alert">
 
 </div>
-<div id="message">{{ message }}</div>
-    <div id="postView">
-            <div id="submitView">
-                <form id="postSubmit" action="{% url 'submit_post' %}" method="POST">
-                    {% csrf_token %}
-                    {{ postForm }}
-                    <input class="btn btn-primary" type="submit" value="Upload post">
-                </form>
-            </div>
-        <!--  10 por página --> 
-        <div id="allPosts">
+<div class="alert" role="alert" id="message">{{ message }}</div>
+<hr>
+<div id="submitView">
+    <form id="postSubmit" action="{% url 'submit_post' %}" method="POST">
+        {% csrf_token %}
+        {{ postForm }}
+        <hr>
+        <div class="button">
+        <input class="btn btn-light" type="submit" value="Upload post">
+    </div>
+    </form>
+    <hr>
+</div>
+<div id="postView">
+    <!--  10 por página -->
+    <div id="allPosts">
 
-        </div>
-        <div class="followingPosts">
-            <!--si user está loggeado--> 
-        </div>
- </div>
-    {% if user.is_authenticated %}
-    <div id="profileView">
+    </div>
+    <div class="followingPosts">
         <!--si user está loggeado-->
-        <div class="profile">
-            <img id="profile-picture" src="" alt="profile-picture">
-            <a id="edit-profile" href="#editProfileView">Edit profile</a>
-            <a id="change_picture" href="#editImageView">change_picturee</a>
-            <p id="name"></p>
-            <p id="username"></p>
-            <div id="followView">
-                <div id="followings">
-    
-                </div>
-                <div id="followers">
-        
-                </div>
-                <form id="followForm" action="{% url 'follow' %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" id="follow" name="follow" value="">
-                    <input class="btn btn-primary" type="submit" value="Follow">
-                </form>
-            </div>
-            <p id="bio"></p>
-            <p id="joined"></p>
+    </div>
+</div>
+<div id="profileView">
+    <!--si user está loggeado-->
+    <div class="profile">
+        <div class="profilediv">
+        <div class="profile-pic">
+        <img id="profile-picture" src alt="profile-picture">
+    </div>
+        <div class="profile-edit">
+        <a id="edit-profile" href="#editProfileView">Edit profile</a>
+        <a id="change_picture" href="#editImageView">Change_picture</a>
         </div>
     </div>
-    <div id="editProfileView">
-        <h1>Edit profile</h1>
-        <form id="edit-form" action="{% url 'set_profile' %}" method="put">
-            {% csrf_token %} 
-            {{form.as_p}}
-        <input class="btn btn-primary" type="submit" value="Update Profile">
-        </form>
+        <div class="profile-info">
+        <h3 id="name"></h3>
+        <p id="username"></p>
+        <div id="followView">
+            <div id="followings">
+
+            </div>
+            <div id="followers">
+
+            </div>
+            <form id="followForm" method="PUT">
+                {% csrf_token %}
+                <input type="hidden" id="follow" name="follow" value>
+                <input id="is_following" class="btn btn-light" type="submit"
+                    value>
+            </form>
+        </div>
+        <p id="bio"></p>
+        <p id="joined"></p>
+        </div>
     </div>
-    <div id="editImageView">
-        <form id="edit-picture-form" action="{% url 'change_picture' %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %} 
-            {{pictureForm.as_p}}
-        <input class="btn btn-primary" type="submit" value="Update Picture">
-        </form>
+    <hr>
+    <h2>User posts</h2>
+    <hr>
+    <div id="userPosts">
+        
     </div>
+</div>
+{% if user.is_authenticated %}
+<div id="editProfileView">
+    <h1>Edit profile</h1>
+    <form id="edit-form" action="{% url 'set_profile' %}" method="put">
+        {% csrf_token %}
+        {{form}}
+        <input class="btn btn-light edit-submit-btn" type="submit" value="Update Profile">
+    </form>
+</div>
+<div id="editImageView">
+    <form id="edit-picture-form" action="{% url 'change_picture' %}"
+        method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{pictureForm.as_p}}
+        <input class="btn btn-light edit-submit-btn" type="submit" value="Update Picture">
+    </form>
 {% endif %}
+</div>
 <div id="pagination">
-    <form id="previousPageForm" method="get">
-        <input type="hidden" id="previousPage" name="page" value="">
-        <button type="submit" id="previous" class="btn btn-primary">Previous</button>
+    <form id="previousPageForm" method="get" >
+        <input type="hidden" id="previousPage" name="page" value>
+        <button type="submit" id="previous"
+            class="btn btn-primary">Previous</button>
     </form>
     <span id="page"></span>
     <form method="get" id="nextPageForm">
-        <input type="hidden" id="nextPage" name="page" value="">
+        <input type="hidden" id="nextPage" name="page" value>
         <button type="submit" id="next" class="btn btn-primary">Next</button>
     </form>
 </div>
 {% endblock %}
 {% block script %}
-    <script src="{% static 'network/feed.js' %}"></script>
+<script src="{% static 'network/feed.js' %}"></script>
 {% endblock %}

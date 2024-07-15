@@ -1,247 +1,712 @@
 svg {
-    cursor: pointer;
-    overflow: visible;
-    width: 45px;
-    margin: 20px;
+  cursor: pointer;
+  overflow: visible;
+  width: 45px;
+  margin: 20px;
+}
+
+svg #heart {
+  transform-origin: center;
+  animation: animateHeartOut 0.3s linear forwards;
+}
+
+svg #main-circ {
+  transform-origin: 29.5px 29.5px;
+}
+
+.checkbox {
+  display: none;
+}
+
+.checkbox:checked + label svg #heart {
+  transform: scale(0.2);
+  fill: #e2264d;
+  animation: animateHeart 0.3s linear forwards 0.25s;
+}
+
+.checkbox:checked + label svg #main-circ {
+  transition: all 2s;
+  animation: animateCircle 0.3s linear forwards;
+  opacity: 1;
+}
+
+.checkbox:checked + label svg #grp1 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+
+.checkbox:checked + label svg #grp1 #oval1 {
+  transform: scale(0) translate(0, -30px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp1 #oval2 {
+  transform: scale(0) translate(10px, -50px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp2 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+
+.checkbox:checked + label svg #grp2 #oval1 {
+  transform: scale(0) translate(30px, -15px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp2 #oval2 {
+  transform: scale(0) translate(60px, -15px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp3 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+
+.checkbox:checked + label svg #grp3 #oval1 {
+  transform: scale(0) translate(30px, 0px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp3 #oval2 {
+  transform: scale(0) translate(60px, 10px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp4 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+
+.checkbox:checked + label svg #grp4 #oval1 {
+  transform: scale(0) translate(30px, 15px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp4 #oval2 {
+  transform: scale(0) translate(40px, 50px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp5 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+
+.checkbox:checked + label svg #grp5 #oval1 {
+  transform: scale(0) translate(-10px, 20px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp5 #oval2 {
+  transform: scale(0) translate(-60px, 30px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp6 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+
+.checkbox:checked + label svg #grp6 #oval1 {
+  transform: scale(0) translate(-30px, 0px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp6 #oval2 {
+  transform: scale(0) translate(-60px, -5px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp7 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+
+.checkbox:checked + label svg #grp7 #oval1 {
+  transform: scale(0) translate(-30px, -15px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp7 #oval2 {
+  transform: scale(0) translate(-55px, -30px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+
+.checkbox:checked + label svg #grp2 {
+  opacity: 1;
+  transition: 0.1s opacity 0.3s;
+}
+
+.checkbox:checked + label svg #grp3 {
+  opacity: 1;
+  transition: 0.1s opacity 0.3s;
+}
+
+.checkbox:checked + label svg #grp4 {
+  opacity: 1;
+  transition: 0.1s opacity 0.3s;
+}
+
+.checkbox:checked + label svg #grp5 {
+  opacity: 1;
+  transition: 0.1s opacity 0.3s;
+}
+
+.checkbox:checked + label svg #grp6 {
+  opacity: 1;
+  transition: 0.1s opacity 0.3s;
+}
+
+.checkbox:checked + label svg #grp7 {
+  opacity: 1;
+  transition: 0.1s opacity 0.3s;
+}
+
+.alert a {
+  color: #222831;
+}
+
+@keyframes animateCircle {
+  40% {
+    transform: scale(10);
+    opacity: 1;
+    fill: #dd4688;
   }
-  
-  svg #heart {
-    transform-origin: center;
-    animation: animateHeartOut .3s linear forwards;
+  55% {
+    transform: scale(11);
+    opacity: 1;
+    fill: #d46abf;
   }
-  
-  svg #main-circ {
-    transform-origin: 29.5px 29.5px;
+  65% {
+    transform: scale(12);
+    opacity: 1;
+    fill: #cc8ef5;
   }
-  
-  .checkbox {
+  75% {
+    transform: scale(13);
+    opacity: 1;
+    fill: transparent;
+    stroke: #cc8ef5;
+    stroke-width: 0.5;
+  }
+  85% {
+    transform: scale(17);
+    opacity: 1;
+    fill: transparent;
+    stroke: #cc8ef5;
+    stroke-width: 0.2;
+  }
+  95% {
+    transform: scale(18);
+    opacity: 1;
+    fill: transparent;
+    stroke: #cc8ef5;
+    stroke-width: 0.1;
+  }
+  100% {
+    transform: scale(19);
+    opacity: 1;
+    fill: transparent;
+    stroke: #cc8ef5;
+    stroke-width: 0;
+  }
+}
+@keyframes animateHeart {
+  0% {
+    transform: scale(0.2);
+  }
+  40% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes animateHeartOut {
+  0% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@media (min-width: 768px) {
+  body {
+    height: 100vmax;
+    width: 100vw;
+    background-color: #222831;
+    color: #eeeeee;
+  }
+  body hr {
+    border: 0.2vh solid #31363f;
+  }
+  body a {
+    color: #eeeeee;
+  }
+  body .nav {
+    float: left;
+    width: 25%;
+    height: 100vmax;
+    border-right: 0.2vw solid #31363f;
+  }
+  body .nav nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start !important;
+    gap: 0;
+    position: fixed;
+  }
+  body .nav nav ul {
+    display: flex;
+    flex-direction: column;
+  }
+  body .nav nav ul li {
+    margin: 10px;
+  }
+  body .body {
+    float: left;
+    width: 50%;
+  }
+  body .sidebar {
+    float: right;
+    width: 25%;
+    height: 100vmax;
+    border-left: 0.2vw solid #31363f;
+  }
+  body .sidebar nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start !important;
+    gap: 0;
+    position: fixed;
+    height: 100vh;
+  }
+  body .sidebar nav ul {
+    display: flex;
+    flex-direction: column;
+  }
+  body .sidebar nav ul li {
+    margin: 10px;
+  }
+  body .post {
+    display: flex;
+    border-bottom: 0.2vh solid #31363f;
+  }
+  body .post .poster-picture {
+    width: 5vw;
+    height: 5vw;
+    border-radius: 50%;
+    margin: 1%;
+  }
+  body .post .poster-picture img {
+    width: 5vw;
+    height: 5vw;
+    border-radius: 50%;
+  }
+  body .post .full-post {
+    width: 100%;
+  }
+  body .post .full-post .post-header {
+    display: flex;
+    gap: 3%;
+    justify-content: flex-start;
+    margin: 1%;
+  }
+  body .post .full-post .post-header a {
+    color: #eeeeee;
+  }
+  body .post .full-post .post-header h3 {
+    font-size: 1.2rem;
+    margin: 0;
+  }
+  body .post .full-post .post-header p {
+    margin: 0;
+  }
+  body .post .full-post .post-content {
+    margin: 1%;
+  }
+  body .post .full-post .post-content p {
+    margin: 0;
+  }
+  body .post .full-post .post-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 1%;
+    gap: 1%;
+  }
+  body .post .full-post .post-footer .likes {
+    align-self: flex-end;
+    margin-right: 1%;
+    display: flex;
+  }
+  body .post .full-post .post-footer .likes span {
+    align-self: center;
+  }
+  body .post .full-post .post-footer .likes svg {
+    margin: 0.5%;
+  }
+  body #pagination {
+    position: fixed;
+    bottom: 0;
+  }
+  body #pagination span {
     display: none;
   }
-  
-  .checkbox:checked+label svg #heart {
-    transform: scale(0.2);
-    fill: #E2264D;
-    animation: animateHeart .3s linear forwards .25s;
+  body .profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1%;
   }
-  
-  .checkbox:checked+label svg #main-circ {
-    transition: all 2s;
-    animation: animateCircle .3s linear forwards;
-    opacity: 1;
+  body .profile a {
+    border: 0.2vh solid #31363f;
+    border-radius: 3vw;
+    padding: 1vw;
+    text-align: center;
   }
-  
-  .checkbox:checked+label svg #grp1 {
-    opacity: 1;
-    transition: .1s all .3s;
+  body .profile .profilediv {
+    display: flex;
+    justify-content: space-between;
+    padding: 3%;
+    width: 100%;
   }
-  
-  .checkbox:checked+label svg #grp1 #oval1 {
-    transform: scale(0) translate(0, -30px);
-    transform-origin: 0 0 0;
-    transition: .5s transform .3s;
+  body .profile .profilediv .profile-edit {
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
   }
-  
-  .checkbox:checked+label svg #grp1 #oval2 {
-    transform: scale(0) translate(10px, -50px);
-    transform-origin: 0 0 0;
-    transition: 1.5s transform .3s;
+  body .profile #profile-picture {
+    width: 10vw;
+    height: 10vw;
+    border-radius: 50%;
+    border: grey solid 0.6vw;
   }
-  
-  .checkbox:checked+label svg #grp2 {
-    opacity: 1;
-    transition: .1s all .3s;
+  body .profile #profile-picture img {
+    width: 10vw;
+    height: 10vw;
+    border-radius: 50%;
   }
-  
-  .checkbox:checked+label svg #grp2 #oval1 {
-    transform: scale(0) translate(30px, -15px);
-    transform-origin: 0 0 0;
-    transition: .5s transform .3s;
+  body .profile .profile-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 1%;
+    width: 100%;
+    padding: 3%;
   }
-  
-  .checkbox:checked+label svg #grp2 #oval2 {
-    transform: scale(0) translate(60px, -15px);
-    transform-origin: 0 0 0;
-    transition: 1.5s transform .3s;
+  body .profile .profile-info h3 {
+    font-size: 1.5rem;
   }
-  
-  .checkbox:checked+label svg #grp3 {
-    opacity: 1;
-    transition: .1s all .3s;
+  body .profile .profile-info p {
+    margin: 0;
   }
-  
-  .checkbox:checked+label svg #grp3 #oval1 {
-    transform: scale(0) translate(30px, 0px);
-    transform-origin: 0 0 0;
-    transition: .5s transform .3s;
+  #submitView #id_content {
+    background-color: #222831;
+    width: 50%;
+    height: 20vh;
+    border: 0;
+    resize: none;
+    margin-left: 1%;
+    caret-color: #eeeeee;
+    color: #eeeeee;
+    font-weight: bold;
   }
-  
-  .checkbox:checked+label svg #grp3 #oval2 {
-    transform: scale(0) translate(60px, 10px);
-    transform-origin: 0 0 0;
-    transition: 1.5s transform .3s;
+  #submitView #id_content:focus {
+    outline: none;
   }
-  
-  .checkbox:checked+label svg #grp4 {
-    opacity: 1;
-    transition: .1s all .3s;
+  #submitView .button {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 1%;
   }
-  
-  .checkbox:checked+label svg #grp4 #oval1 {
-    transform: scale(0) translate(30px, 15px);
-    transform-origin: 0 0 0;
-    transition: .5s transform .3s;
+  #submitView .button input {
+    border-radius: 2vw;
   }
-  
-  .checkbox:checked+label svg #grp4 #oval2 {
-    transform: scale(0) translate(40px, 50px);
-    transform-origin: 0 0 0;
-    transition: 1.5s transform .3s;
+  .alert {
+    margin: 1%;
   }
-  
-  .checkbox:checked+label svg #grp5 {
-    opacity: 1;
-    transition: .1s all .3s;
+  #editProfileView {
+    margin: 1%;
   }
-  
-  .checkbox:checked+label svg #grp5 #oval1 {
-    transform: scale(0) translate(-10px, 20px);
-    transform-origin: 0 0 0;
-    transition: .5s transform .3s;
+  #editProfileView label {
+    font-size: 1rem;
+    font-weight: bold;
   }
-  
-  .checkbox:checked+label svg #grp5 #oval2 {
-    transform: scale(0) translate(-60px, 30px);
-    transform-origin: 0 0 0;
-    transition: 1.5s transform .3s;
+  #editProfileView .edit-submit-btn {
+    width: 35%;
+    border: 0.2vh solid #31363f;
+    border-radius: 2vw;
+    padding: 1vw;
+    margin: 1%;
   }
-  
-  .checkbox:checked+label svg #grp6 {
-    opacity: 1;
-    transition: .1s all .3s;
+  #editImageView {
+    margin: 1%;
   }
-  
-  .checkbox:checked+label svg #grp6 #oval1 {
-    transform: scale(0) translate(-30px, 0px);
-    transform-origin: 0 0 0;
-    transition: .5s transform .3s;
+  #editImageView label {
+    font-size: 1rem;
+    font-weight: bold;
+    display: block;
   }
-  
-  .checkbox:checked+label svg #grp6 #oval2 {
-    transform: scale(0) translate(-60px, -5px);
-    transform-origin: 0 0 0;
-    transition: 1.5s transform .3s;
+  #editImageView .edit-submit-btn {
+    width: 35%;
+    border: 0.2vh solid #31363f;
+    border-radius: 2vw;
+    padding: 1vw;
+    margin: 1%;
   }
-  
-  .checkbox:checked+label svg #grp7 {
-    opacity: 1;
-    transition: .1s all .3s;
+}
+@media (max-width: 767px) {
+  body {
+    height: 100vmax;
+    background-color: #222831;
+    color: #eeeeee;
+    display: flex;
+    flex-direction: column;
   }
-  
-  .checkbox:checked+label svg #grp7 #oval1 {
-    transform: scale(0) translate(-30px, -15px);
-    transform-origin: 0 0 0;
-    transition: .5s transform .3s;
+  body hr {
+    border: 0.2vh solid #31363f;
   }
-  
-  .checkbox:checked+label svg #grp7 #oval2 {
-    transform: scale(0) translate(-55px, -30px);
-    transform-origin: 0 0 0;
-    transition: 1.5s transform .3s;
+  body a {
+    color: #eeeeee;
   }
-  
-  .checkbox:checked+label svg #grp2 {
-    opacity: 1;
-    transition: .1s opacity .3s;
+  body .navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1%;
+    background-color: #222831;
+    border-bottom: 0.2vh solid #31363f;
+    font-size: 0.9rem;
   }
-  
-  .checkbox:checked+label svg #grp3 {
-    opacity: 1;
-    transition: .1s opacity .3s;
+  body .navbar .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-left: 1%;
   }
-  
-  .checkbox:checked+label svg #grp4 {
-    opacity: 1;
-    transition: .1s opacity .3s;
+  body .navbar .navbar-toggler {
+    margin-right: 1%;
   }
-  
-  .checkbox:checked+label svg #grp5 {
-    opacity: 1;
-    transition: .1s opacity .3s;
+  body .nav {
+    height: fit-content;
+    position: sticky;
+    top: 0;
+    border-right: 0.2vw solid #31363f;
   }
-  
-  .checkbox:checked+label svg #grp6 {
-    opacity: 1;
-    transition: .1s opacity .3s;
+  body .nav nav {
+    background-color: #222831;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start !important;
+    gap: 0;
   }
-  
-  .checkbox:checked+label svg #grp7 {
-    opacity: 1;
-    transition: .1s opacity .3s;
+  body .nav nav ul {
+    display: flex;
+    flex-direction: row;
   }
-  
-  @keyframes animateCircle {
-    40% {
-      transform: scale(10);
-      opacity: 1;
-      fill: #DD4688;
-    }
-    55% {
-      transform: scale(11);
-      opacity: 1;
-      fill: #D46ABF;
-    }
-    65% {
-      transform: scale(12);
-      opacity: 1;
-      fill: #CC8EF5;
-    }
-    75% {
-      transform: scale(13);
-      opacity: 1;
-      fill: transparent;
-      stroke: #CC8EF5;
-      stroke-width: .5;
-    }
-    85% {
-      transform: scale(17);
-      opacity: 1;
-      fill: transparent;
-      stroke: #CC8EF5;
-      stroke-width: .2;
-    }
-    95% {
-      transform: scale(18);
-      opacity: 1;
-      fill: transparent;
-      stroke: #CC8EF5;
-      stroke-width: .1;
-    }
-    100% {
-      transform: scale(19);
-      opacity: 1;
-      fill: transparent;
-      stroke: #CC8EF5;
-      stroke-width: 0;
-    }
+  body .nav nav ul li {
+    margin: 10px;
   }
-  
-  @keyframes animateHeart {
-    0% {
-      transform: scale(0.2);
-    }
-    40% {
-      transform: scale(1.2);
-    }
-    100% {
-      transform: scale(1);
-    }
+  body .body {
+    margin: 2%;
   }
-  
-  @keyframes animateHeartOut {
-    0% {
-      transform: scale(1.4);
-    }
-    100% {
-      transform: scale(1);
-    }
+  body .sidebar {
+    display: none;
   }
+  body .post {
+    display: flex;
+    border-bottom: 0.2vh solid #31363f;
+  }
+  body .post .poster-picture {
+    width: 5vw;
+    height: 5vw;
+    border-radius: 50%;
+    margin: 1%;
+  }
+  body .post .poster-picture img {
+    width: 5vw;
+    height: 5vw;
+    border-radius: 50%;
+  }
+  body .post .full-post {
+    width: 100%;
+  }
+  body .post .full-post .post-header {
+    display: flex;
+    gap: 3%;
+    justify-content: flex-start;
+    margin: 1%;
+  }
+  body .post .full-post .post-header a {
+    color: #eeeeee;
+  }
+  body .post .full-post .post-header h3 {
+    font-size: 1.2rem;
+    margin: 0;
+  }
+  body .post .full-post .post-header p {
+    margin: 0;
+  }
+  body .post .full-post .post-content {
+    margin: 1%;
+  }
+  body .post .full-post .post-content p {
+    margin: 0;
+  }
+  body .post .full-post .post-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 1%;
+    gap: 1%;
+  }
+  body .post .full-post .post-footer .likes {
+    align-self: flex-end;
+    margin-right: 1%;
+    display: flex;
+  }
+  body .post .full-post .post-footer .likes span {
+    align-self: center;
+  }
+  body .post .full-post .post-footer .likes svg {
+    margin: 0.5%;
+  }
+  body #pagination {
+    position: fixed;
+    bottom: 0;
+  }
+  body #pagination span {
+    display: none;
+  }
+  body .profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1%;
+  }
+  body .profile a {
+    border: 0.2vh solid #31363f;
+    border-radius: 3vw;
+    padding: 1vw;
+    text-align: center;
+  }
+  body .profile .profilediv {
+    display: flex;
+    justify-content: space-between;
+    padding: 3%;
+    width: 100%;
+  }
+  body .profile .profilediv .profile-edit {
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+  }
+  body .profile #profile-picture {
+    width: 10vw;
+    height: 10vw;
+    border-radius: 50%;
+    border: grey solid 0.6vw;
+  }
+  body .profile #profile-picture img {
+    width: 10vw;
+    height: 10vw;
+    border-radius: 50%;
+  }
+  body .profile .profile-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 1%;
+    width: 100%;
+    padding: 3%;
+  }
+  body .profile .profile-info h3 {
+    font-size: 1.5rem;
+  }
+  body .profile .profile-info p {
+    margin: 0;
+  }
+  #submitView #id_content {
+    background-color: #222831;
+    width: 50%;
+    height: 20vh;
+    border: 0;
+    resize: none;
+    margin-left: 1%;
+    caret-color: #eeeeee;
+    color: #eeeeee;
+    font-weight: bold;
+  }
+  #submitView #id_content:focus {
+    outline: none;
+  }
+  #submitView .button {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 1%;
+  }
+  #submitView .button input {
+    border-radius: 2vw;
+  }
+  .alert {
+    margin: 1%;
+  }
+  #editProfileView {
+    margin: 1%;
+  }
+  #editProfileView label {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  #editProfileView .edit-submit-btn {
+    width: 35%;
+    border: 0.2vh solid #31363f;
+    border-radius: 2vw;
+    padding: 1vw;
+    margin: 1%;
+  }
+  #editImageView {
+    margin: 1%;
+  }
+  #editImageView label {
+    font-size: 1rem;
+    font-weight: bold;
+    display: block;
+  }
+  #editImageView .edit-submit-btn {
+    width: 35%;
+    border: 0.2vh solid #31363f;
+    border-radius: 2vw;
+    padding: 1vw;
+    margin: 1%;
+  }
+  #pagination {
+    position: fixed;
+    bottom: 0;
+  }
+  #pagination span {
+    display: none;
+  }
+}
+
+/*# sourceMappingURL=styles.css.map */
